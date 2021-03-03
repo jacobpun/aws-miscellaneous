@@ -1,0 +1,31 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: Simple template for creating an EC2 instance with public IP
+Resources:
+  WebServerSecurityGroup:
+    Type: 'AWS::EC2::SecurityGroup'
+    Properties: 
+      GroupDescription: Open port 80 and ssh 
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: '80'
+          ToPort: '80'
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: '22'
+          ToPort: '22'
+          CidrIp: 0.0.0.0/0
+  IPAddress:
+    Type: 'AWS::EC2::EIP'
+  WebServer:
+    Type: 'AWS::EC2::Instance'
+    Properties:
+      ImageId: 'ami-0915bcb5fa77e4892'
+      InstanceType: 't2.micro'
+      SecurityGroups: 
+        - !Ref WebServerSecurityGroup
+      KeyName: 'us-east-1-kp'
+  IPAssoc:
+    Type: 'AWS::EC2::EIPAssociation'
+    Properties:
+      InstanceId: !Ref WebServer
+      EIP: !Ref IPAddress
