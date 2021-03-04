@@ -1,5 +1,9 @@
 AWSTemplateFormatVersion: 2010-09-09
 Description: Simple template for creating an EC2 instance with public IP
+Parameters:
+  KeyName:
+    Type: 'AWS::EC2::KeyPair::KeyName'
+    Description: 'SSH Keypair'
 Resources:
   WebServerSecurityGroup:
     Type: 'AWS::EC2::SecurityGroup'
@@ -23,9 +27,17 @@ Resources:
       InstanceType: 't2.micro'
       SecurityGroups: 
         - !Ref WebServerSecurityGroup
-      KeyName: 'us-east-1-kp'
+      KeyName: !Ref KeyName 
   IPAssoc:
     Type: 'AWS::EC2::EIPAssociation'
     Properties:
       InstanceId: !Ref WebServer
       EIP: !Ref IPAddress
+Outputs:
+  IPAddress:
+    Value: !Ref IPAddress
+    Description: Elastic IP
+  DNSName:
+    Value: !GetAtt
+            - WebServer
+            - PublicDnsName  
