@@ -1,0 +1,41 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  shopping-list
+
+  Sample SAM Template for shopping-list
+  
+Globals:
+  Function:
+    Timeout: 3
+
+Resources:
+  ShoppingListFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ./shopping-list
+      Handler: app.lambdaHandler
+      Runtime: nodejs14.x
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref Repository
+      Policies: AmazonDynamoDBFullAccess    
+      Events:
+        GetAll:
+          Type: Api 
+          Properties:
+            Path: /shopping-list
+            Method: get
+  Repository:
+    Type: AWS::Serverless::SimpleTable
+
+Outputs:
+  ShollingListApi:
+    Description: "API Gateway endpoint URL for Prod stage for Shopping List function"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello/"
+  ShoppingListFunction:
+    Description: "Shopping List Lambda Function ARN"
+    Value: !GetAtt ShoppingListFunction.Arn
+  ShoppingListFunctionIamRole:
+    Description: "Implicit IAM Role created for Shopping List function"
+    Value: !GetAtt ShoppingListFunctionRole.Arn
