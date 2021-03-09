@@ -13,19 +13,27 @@ Resources:
   ShoppingListFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: ./shopping-list
+      CodeUri: ./built
       Handler: app.lambdaHandler
       Runtime: nodejs14.x
       Environment:
         Variables:
           TABLE_NAME: !Ref Repository
       Policies: AmazonDynamoDBFullAccess    
+      AutoPublishAlias: Prod
+      DeploymentPreference:
+        Type: Linear10PercentEvery10Minutes
       Events:
         GetAll:
           Type: Api 
           Properties:
             Path: /shopping-list
             Method: get
+        Create:
+          Type: Api 
+          Properties:
+            Path: /shopping-list
+            Method: post    
   Repository:
     Type: AWS::Serverless::SimpleTable
 

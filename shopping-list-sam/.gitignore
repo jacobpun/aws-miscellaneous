@@ -111,7 +111,8 @@ ehthumbs.db
 ehthumbs_vista.db
 
 # Folder config file
-Desktop.ini
+Desktop.inip /home/punnoose2/workspace/aws/aws-miscellaneous/shopping-list-sam/shopping-list/",
+    "tscversion": "tsc -v"
 
 # Recycle Bin used on file shares
 $RECYCLE.BIN/
@@ -127,3 +128,4 @@ $RECYCLE.BIN/
 
 
 # End of https://www.gitignore.io/api/osx,node,linux,windows
+built/
